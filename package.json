@@ -38,11 +38,11 @@
   },
   "homepage": "https://github.com/adonespitogo/node-minify-all-js#readme",
   "license": "MIT",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
     "@node-minify/babel-minify": "^6.1.0",
     "@node-minify/core": "^6.1.0",
+    "@node-minify/terser": "^6.1.0",
     "@node-minify/uglify-js": "^6.1.0"
   }
 }

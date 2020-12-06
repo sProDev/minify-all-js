@@ -2,7 +2,13 @@
 const fs = require("fs");
 const path = require("path");
 const minify = require('@node-minify/core');
-const babelMinify = require('@node-minify/babel-minify');
+const uglifyjs = require('@node-minify/uglify-js');
+const babel = require('@node-minify/babel-minify');
+const terser = require('@node-minify/terser');
+
+const minifiers = { uglifyjs, babel, terser }
+
+var failed_files = []
 
 function walk (currentDirPath, callback) {
   fs.readdirSync(currentDirPath).forEach(function(name) {
@@ -16,24 +22,42 @@ function walk (currentDirPath, callback) {
   });
 }
 
-function minifyAll (dir, options, callback){
-  options = options || {};
+function tryMinify(path, minifier) {
+  var compressors = Object.keys(minifiers)
+  var i = 0
 
-  walk(dir, function(path, result){
-    if (path.substr(-3) === ".js"){
-      if (!options.silent){
-        console.log("found file: " + path);
-      }
-      minify({
-        compressor: babelMinify,
-        input: path,
-        output: path,
-        callback: callback || function(err, min){
-          if(err){
-            console.log(err);
-          }
+  function _minify() {
+    var compressor = minifiers[compressors[i]]
+    minify({
+      compressor: compressor,
+      input: path,
+      output: path
+    })
+      .then(function () {
+        console.log(`Minified: ${path}`)
+      })
+      .catch(function (err) {
+        i ++;
+        if (compressors[i]) {
+          console.log(`Unable to minify ${path} with ${compressors[i - 1]}, trying with ${compressors[i]}...`)
+          _minify();
+        } else {
+          console.log('Error: Unable to compress ' + path)
+          failed_files.push(path)
         }
       });
+  }
+
+  _minify();
+
+}
+
+function minifyAll (dir){
+
+  walk(dir, function(path){
+    if (path.substr(-3) === ".js"){
+      //console.log("found file: " + path);
+      tryMinify(path)
     }
   });
 };
@@ -42,7 +66,6 @@ if (require.main === module) {
   var input = process.argv;
   var inputDir = input[2];
   minifyAll(inputDir);
-
 } else {
   module.exports = minifyAll;
 }
