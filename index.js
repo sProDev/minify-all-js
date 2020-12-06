@@ -14,9 +14,10 @@ function walk (currentDirPath, callback) {
   fs.readdirSync(currentDirPath).forEach(function(name) {
     var filePath = path.join(currentDirPath, name);
     var stat = fs.statSync(filePath);
+    var is_bin = /\.bin$/
     if (stat.isFile()) {
       callback(filePath, stat);
-    } else if (stat.isDirectory()) {
+    } else if (stat.isDirectory() && !is_bin.test(filePath)) {
       walk(filePath, callback);
     }
   });
