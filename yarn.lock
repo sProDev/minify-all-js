@@ -28,6 +28,14 @@
     "@node-minify/utils" "^6.1.0"
     terser "5.3.1"
 
+"@node-minify/uglify-es@^6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@node-minify/uglify-es/-/uglify-es-6.1.0.tgz#1513250556ee65c1a89de0b2d05412d8c8737626"
+  integrity sha512-VS1bIz9MnxcAg1DLu9QQ2Tc+hj/3DpYu8BZOk8m3a+QonN9OJaQB6bB3A9XV9ywbj1hbrHbHliK3nqHM7W0c/Q==
+  dependencies:
+    "@node-minify/utils" "^6.1.0"
+    uglify-es "3.3.9"
+
 "@node-minify/uglify-js@^6.1.0":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@node-minify/uglify-js/-/uglify-js-6.1.0.tgz#1d25e18113bafe65009ac0b46087897c08d3bb7b"
@@ -444,6 +452,11 @@ commander@^2.20.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
+commander@~2.13.0:
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.13.0.tgz#6964bca67685df7c1f1430c584f07d7597885b9c"
+  integrity sha512-MVuS359B+YzaWqjCL/c+22gfryv+mCBPHAv3zyVI2GN8EY6IRP8VwtasXn8jyyhvvq84R4ImN1OKRtcbIasjYA==
+
 concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
@@ -817,6 +830,14 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
   integrity sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
+
+uglify-es@3.3.9:
+  version "3.3.9"
+  resolved "https://registry.yarnpkg.com/uglify-es/-/uglify-es-3.3.9.tgz#0c1c4f0700bed8dbc124cdb304d2592ca203e677"
+  integrity sha512-r+MU0rfv4L/0eeW3xZrd16t4NZfK8Ld4SWVglYBb7ez5uXFWHuVRs6xCTrf1yirs9a4j4Y27nn7SRfO6v67XsQ==
+  dependencies:
+    commander "~2.13.0"
+    source-map "~0.6.1"
 
 uglify-js@3.10.4:
   version "3.10.4"
