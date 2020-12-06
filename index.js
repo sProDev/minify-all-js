@@ -9,54 +9,55 @@ const terser = require('@node-minify/terser');
 const minifiers = { uglifyjs, babel, terser }
 
 var failed_files = []
+var total_files = 0
 
 const tryMinify = async file => {
   var compressors = Object.keys(minifiers)
   var i = 0
+  total_files ++
 
   async function _minify() {
     var compressor = minifiers[compressors[i]]
 
     try {
       await minify({
-        compressor: compressor,
+        compressor: terser,
         input: file,
-        output: file
+        output: file,
+        options: {
+          warnings: true,
+          mangle: false
+        }
       })
-      //console.log(`Minified: ${file}`)
-      process.stdout.write('.')
     } catch(e) {
-      i ++;
-      if (compressors[i]) {
-        //console.log(`Unable to minify ${file} with ${compressors[i - 1]}, trying with ${compressors[i]}...`)
-        await _minify();
-      } else {
-        //console.log('Error: Unable to compress ' + file)
-        process.stdout.write('.')
-        failed_files.push(file)
-      }
+      failed_files.push(file)
     }
+    process.stdout.write('.')
   }
   await _minify();
 }
 
 const walk = async (currentDirPath) => {
-  await promiseSeries(fs.readdirSync(currentDirPath).map(name => {
-    return async () => {
-      var filePath = path.join(currentDirPath, name);
-      var stat = fs.statSync(filePath);
-      var is_bin = /\.bin$/
-      if (stat.isFile() && filePath.substr(-3) === ".js") {
-        await tryMinify(filePath)
-      } else if (stat.isDirectory() && !is_bin.test(filePath)) {
-        await walk(filePath);
-      }
+  var files = []
+  var dirs = []
+  fs.readdirSync(currentDirPath).forEach(name => {
+    var filePath = path.join(currentDirPath, name);
+    var stat = fs.statSync(filePath);
+    var is_bin = /\.bin$/
+    if (stat.isFile() && filePath.substr(-3) === ".js") {
+      files.push(filePath)
+    } else if (stat.isDirectory() && !is_bin.test(filePath)) {
+      dirs.push(filePath)
     }
-  }))
+  })
+  await Promise.all(files.map(f => tryMinify(f)))
+  await promiseSeries(dirs.map(dir => () => walk(dir)))
 }
 
 async function minifyAll (dir){
   await walk(dir);
+  process.stdout.write('.\n')
+  console.log('Total found files: ' + total_files)
   if (failed_files.length) {
     console.log(`\n\nFailed to minify files:`)
     failed_files.forEach(f => console.log('\t' + f))
