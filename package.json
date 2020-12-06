@@ -1,17 +1,17 @@
 {
-  "name": "minify-all",
-  "version": "1.2.3",
+  "name": "minify-all-js",
+  "version": "1.0.0",
   "description": "A tool that minifies all .js files in a folder and its nested folders",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joeyism/node-minify-all.git"
+    "url": "https://github.com/adonespitogo/node-minify-all-js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "minify-all": "index.js"
+    "minify-all-js": "index.js"
   },
   "keywords": [
     "minify",
@@ -32,16 +32,13 @@
     "dist",
     "reduce"
   ],
-  "author": "Joey Sham <sham.joey@gmail.com> (http://www.joeyism.com)",
+  "author": "Adones Pitogo <pitogo.adones@gmail.com> (http://www.adonespitogo.com)",
   "bugs": {
-    "url": "https://github.com/joeyism/node-minify-all/issues"
+    "url": "https://github.com/adonespitogo/node-minify-all-js/issues"
   },
-  "homepage": "https://github.com/joeyism/node-minify-all#readme",
-  "license": "ISC",
+  "homepage": "https://github.com/adonespitogo/node-minify-all-js#readme",
+  "license": "MIT",
   "devDependencies": {
-    "chai": "^3.0.0",
-    "istanbul": "^0.3.17",
-    "mocha": "^2.2.5"
   },
   "dependencies": {
     "@node-minify/babel-minify": "^6.1.0",
