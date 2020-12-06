@@ -25,6 +25,7 @@ const minifyJS = async file => {
         output: file,
         options: {
           warnings: true,
+          module: true,
           mangle: false,
           compress: false
         }
