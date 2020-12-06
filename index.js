@@ -25,7 +25,7 @@ const minifyJS = async file => {
         output: file,
         options: {
           warnings: true,
-          module: true,
+          module: options.module,
           mangle: false,
           compress: false
         }
@@ -87,6 +87,7 @@ if (require.main === module) {
   var inputDir = input[2];
 
   options.compress_json = input.includes('-j') || input.includes('-p')
+  options.module = input.includes('-m')
 
   minifyAll(inputDir);
 

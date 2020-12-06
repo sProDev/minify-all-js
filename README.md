@@ -8,15 +8,17 @@ A function that minifies your javascript files (recursively). **minify-all-js** 
 
 ### Run CLI
 
-    > minify-all-js [folder] [-j or -p]
+    > minify-all-js [folder] [-j or -p] [-m]
 
-Use CLI options `-p` or `-j` to compress json files as well.
+Use CLI options:
+ - `-p` or `-j` to compress json files as well.
+ - `-m` to set terser options module to `true`
 
 ### Run in your code
-`minifyAllJs` function has only 1 option 
+`minifyAllJs` function returns a promise 
 
 ```js
-  minifyAllJs([directory], {compress_json: true})
+  minifyAllJs([directory], {compress_json: true, module: true})
 ```
 
 ##### Options
