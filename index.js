@@ -3,22 +3,15 @@ const fs = require("fs");
 const path = require("path");
 const promiseSeries = require('promise.series')
 const minify = require('@node-minify/core');
-const uglifyjs = require('@node-minify/uglify-es');
-const babel = require('@node-minify/babel-minify');
 const terser = require('@node-minify/terser');
-const minifiers = { uglifyjs, babel, terser }
 
 var failed_files = []
 var total_files = 0
 
 const tryMinify = async file => {
-  var compressors = Object.keys(minifiers)
-  var i = 0
   total_files ++
 
   async function _minify() {
-    var compressor = minifiers[compressors[i]]
-
     try {
       await minify({
         compressor: terser,
