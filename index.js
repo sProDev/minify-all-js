@@ -26,7 +26,8 @@ const tryMinify = async file => {
         output: file,
         options: {
           warnings: true,
-          mangle: false
+          mangle: false,
+          compress: false
         }
       })
     } catch(e) {
