@@ -1,66 +1,66 @@
 #!/usr/bin/env node
 const fs = require("fs");
 const path = require("path");
+const promiseSeries = require('promise.series')
 const minify = require('@node-minify/core');
 const uglifyjs = require('@node-minify/uglify-js');
 const babel = require('@node-minify/babel-minify');
 const terser = require('@node-minify/terser');
-
 const minifiers = { uglifyjs, babel, terser }
 
 var failed_files = []
 
-function walk (currentDirPath, callback) {
-  fs.readdirSync(currentDirPath).forEach(function(name) {
-    var filePath = path.join(currentDirPath, name);
-    var stat = fs.statSync(filePath);
-    var is_bin = /\.bin$/
-    if (stat.isFile()) {
-      callback(filePath, stat);
-    } else if (stat.isDirectory() && !is_bin.test(filePath)) {
-      walk(filePath, callback);
-    }
-  });
-}
-
-function tryMinify(path, minifier) {
+const tryMinify = async file => {
   var compressors = Object.keys(minifiers)
   var i = 0
 
-  function _minify() {
+  async function _minify() {
     var compressor = minifiers[compressors[i]]
-    minify({
-      compressor: compressor,
-      input: path,
-      output: path
-    })
-      .then(function () {
-        console.log(`Minified: ${path}`)
+
+    try {
+      await minify({
+        compressor: compressor,
+        input: file,
+        output: file
       })
-      .catch(function (err) {
-        i ++;
-        if (compressors[i]) {
-          console.log(`Unable to minify ${path} with ${compressors[i - 1]}, trying with ${compressors[i]}...`)
-          _minify();
-        } else {
-          console.log('Error: Unable to compress ' + path)
-          failed_files.push(path)
-        }
-      });
+      //console.log(`Minified: ${file}`)
+      process.stdout.write('.')
+    } catch(e) {
+      i ++;
+      if (compressors[i]) {
+        //console.log(`Unable to minify ${file} with ${compressors[i - 1]}, trying with ${compressors[i]}...`)
+        await _minify();
+      } else {
+        //console.log('Error: Unable to compress ' + file)
+        process.stdout.write('.')
+        failed_files.push(file)
+      }
+    }
   }
-
-  _minify();
-
+  await _minify();
 }
 
-function minifyAll (dir){
-
-  walk(dir, function(path){
-    if (path.substr(-3) === ".js"){
-      //console.log("found file: " + path);
-      tryMinify(path)
+const walk = async (currentDirPath) => {
+  await promiseSeries(fs.readdirSync(currentDirPath).map(name => {
+    return async () => {
+      var filePath = path.join(currentDirPath, name);
+      var stat = fs.statSync(filePath);
+      var is_bin = /\.bin$/
+      if (stat.isFile() && filePath.substr(-3) === ".js") {
+        await tryMinify(filePath)
+      } else if (stat.isDirectory() && !is_bin.test(filePath)) {
+        await walk(filePath);
+      }
     }
-  });
+  }))
+}
+
+async function minifyAll (dir){
+  await walk(dir);
+  if (failed_files.length) {
+    console.log(`\n\nFailed to minify files:`)
+    failed_files.forEach(f => console.log('\t' + f))
+  }
 };
 
 if (require.main === module) {

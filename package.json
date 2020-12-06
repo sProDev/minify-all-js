@@ -43,6 +43,7 @@
     "@node-minify/babel-minify": "^6.1.0",
     "@node-minify/core": "^6.1.0",
     "@node-minify/terser": "^6.1.0",
-    "@node-minify/uglify-js": "^6.1.0"
+    "@node-minify/uglify-js": "^6.1.0",
+    "promise.series": "^0.2.0"
   }
 }
