@@ -35,12 +35,27 @@ const minifyJS = async file => {
 }
 
 const minifyJSON = async file => {
-  total_files ++
-  var data = await readFile(file, 'utf8')
-  var json = JSON.parse(data)
   try {
-    await writeFile(file, JSON.stringify(json))
+    if ((options.compress_json || options.packagejson)) {
+      total_files ++
+      var is_package_json = file.indexOf('package.json') > -1
+      var data = await readFile(file, 'utf8')
+      var json = JSON.parse(data)
+      var new_json = {}
+      if (options.packagejson && is_package_json) {
+        var {
+          name, version, bin, main
+        } = json
+        new_json = {name, version}
+        if (bin) new_json.bin = bin
+        if (main) new_json.bin = main
+      } else {
+        new_json = json
+      }
+      await writeFile(file, JSON.stringify(new_json))
+    }
   } catch(e) {}
+  process.stdout.write('.')
 }
 
 const walk = async (currentDirPath) => {
@@ -55,7 +70,7 @@ const walk = async (currentDirPath) => {
     if (stat.isFile()) {
       if (filePath.substr(-3) === ".js")
         js_files.push(filePath)
-      if (options.compress_json && filePath.substr(-5) === ".json")
+      if (filePath.substr(-5) === ".json")
         json_files.push(filePath)
     } else if (stat.isDirectory() && !is_bin.test(filePath)) {
       dirs.push(filePath)
@@ -87,6 +102,7 @@ if (require.main === module) {
   opts.compress_json = input.includes('--json') || input.includes('-j') || false
   opts.module = input.includes('--module') || input.includes('-m') || false
   opts.mangle = input.includes('--mangle') || input.includes('-M') || false
+  opts.packagejson = input.includes('--packagejson') || input.includes('-p') || false
 
   minifyAll(inputDir, opts);
 
