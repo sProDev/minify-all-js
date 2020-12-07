@@ -16,26 +16,22 @@ var options = {}
 
 const minifyJS = async file => {
   total_files ++
-
-  async function _minify() {
-    try {
-      await minify({
-        compressor: terser,
-        input: file,
-        output: file,
-        options: {
-          warnings: true,
-          module: options.module,
-          mangle: false,
-          compress: false
-        }
-      })
-    } catch(e) {
-      failed_files.push(file)
-    }
-    process.stdout.write('.')
+  try {
+    await minify({
+      compressor: terser,
+      input: file,
+      output: file,
+      options: {
+        warnings: true,
+        module: options.module,
+        mangle: false,
+        compress: false
+      }
+    })
+  } catch(e) {
+    failed_files.push(file)
   }
-  await _minify();
+  process.stdout.write('.')
 }
 
 const minifyJSON = async file => {
@@ -50,7 +46,7 @@ const minifyJSON = async file => {
 const walk = async (currentDirPath) => {
   var js_files = []
   var json_files = []
-    var dirs = []
+  var dirs = []
   var current_dirs = await readdir(currentDirPath)
   current_dirs.forEach(name => {
     var filePath = path.join(currentDirPath, name);
@@ -73,6 +69,7 @@ const walk = async (currentDirPath) => {
 
 async function minifyAll (dir, opts){
   Object.assign(options, opts || {})
+  console.log('minify-all-js options:\n', JSON.stringify(options, null, 2))
   await walk(dir);
   process.stdout.write('.\n')
   console.log('Total found files: ' + total_files)
@@ -85,11 +82,13 @@ async function minifyAll (dir, opts){
 if (require.main === module) {
   var input = process.argv;
   var inputDir = input[2];
+  var opts = {}
 
-  options.compress_json = input.includes('-j') || input.includes('-p')
-  options.module = input.includes('-m')
+  opts.compress_json = input.includes('--json') || input.includes('-j') || false
+  opts.module = input.includes('--module') || input.includes('-m') || false
+  opts.mangle = input.includes('--mangle') || input.includes('-M') || false
 
-  minifyAll(inputDir);
+  minifyAll(inputDir, opts);
 
 } else {
   module.exports = minifyAll;

@@ -8,26 +8,17 @@ A function that minifies your javascript files (recursively). **minify-all-js** 
 
 ### Run CLI
 
-    > minify-all-js [folder] [-j or -p] [-m]
+    > minify-all-js [folder] [-j] [-m] [-M]
 
 Use CLI options:
- - `-p` or `-j` to compress json files as well.
- - `-m` to set terser options module to `true`
+ - `-j` or `--json` to compress json files as well. (default: `false`)
+ - `-m` or `--module` to set terser module option to `true` for ES6 files (default: `false`)
+ - `-M` or `--mangle` to set terser mangle option to `true` (default: `false`)
 
-### Run in your code
-`minifyAllJs` function returns a promise 
+### Run programatically
 
 ```js
-  minifyAllJs([directory], {compress_json: true, module: true})
+  var promise = minifyAllJs([directory], {compress_json: true, module: true, mangle: true})
 ```
 
-##### Options
-
-
-##### Example
-
-    var minifyAll = require("minify-all-js");
-    
-    minifyAll("./node_modules");
-
-
+`minifyAllJs` function returns a **promise**
