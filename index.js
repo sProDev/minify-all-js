@@ -44,11 +44,12 @@ const minifyJSON = async file => {
       var new_json = {}
       if (options.packagejson && is_package_json) {
         var {
-          name, version, bin, main
+          name, version, bin, main, dependencies
         } = json
         new_json = {name, version}
         if (bin) new_json.bin = bin
-        if (main) new_json.bin = main
+        if (main) new_json.main = main
+        //if (dependencies) new_json.dependencies = dependencies
       } else {
         new_json = json
       }
