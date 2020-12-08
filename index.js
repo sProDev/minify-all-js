@@ -68,10 +68,10 @@ const walk = async (currentDirPath) => {
     var stat = fs.statSync(filePath);
     var is_bin = /\.bin$/
     if (stat.isFile()) {
-      if (filePath.substr(-3) === ".js" || options.all_js)
-        js_files.push(filePath)
       if (filePath.substr(-5) === ".json")
         json_files.push(filePath)
+      else if (filePath.substr(-3) === ".js" || options.all_js)
+        js_files.push(filePath)
     } else if (stat.isDirectory() && !is_bin.test(filePath)) {
       dirs.push(filePath)
     }
@@ -96,7 +96,7 @@ async function minifyAll (dir, opts){
 
 if (require.main === module) {
   var input = process.argv;
-  var inputDir = input[2];
+  var inputDir = input[2] || process.cwd();
   var opts = {}
 
   opts.compress_json = input.includes('--json') || input.includes('-j') || false
