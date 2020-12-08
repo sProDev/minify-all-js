@@ -68,7 +68,7 @@ const walk = async (currentDirPath) => {
     var stat = fs.statSync(filePath);
     var is_bin = /\.bin$/
     if (stat.isFile()) {
-      if (filePath.substr(-3) === ".js")
+      if (filePath.substr(-3) === ".js" || options.all_js)
         js_files.push(filePath)
       if (filePath.substr(-5) === ".json")
         json_files.push(filePath)
@@ -103,6 +103,7 @@ if (require.main === module) {
   opts.module = input.includes('--module') || input.includes('-m') || false
   opts.mangle = input.includes('--mangle') || input.includes('-M') || false
   opts.packagejson = input.includes('--packagejson') || input.includes('-p') || false
+  opts.all_js = input.includes('--all') || input.includes('-a') || false
 
   minifyAll(inputDir, opts);
 

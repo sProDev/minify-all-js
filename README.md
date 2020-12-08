@@ -19,16 +19,18 @@ Use CLI options:
  - `-j` or `--json` to compress json files as well. (default: `false`)
  - `-m` or `--module` to set terser module option to `true` for ES6 files (default: `false`)
  - `-M` or `--mangle` to set terser mangle option to `true` (default: `false`)
- - `-p` or `--packagejson` to clean up extra fields from package.json files
+ - `-p` or `--packagejson` to clean up extra fields from package.json files (default: false)
+ - `-a` or `--all` to try to compress all files including binary/executable js files without `.js` extension (default: false)
 
 ### Run programatically
 
 ```js
   var promise = minifyAllJs([directory], {
-    compress_json: true,
-    module: true,
-    mangle: true,
-    packagejson: true
+    compress_json: true, // -j in cli
+    module: true,        // -m in cli
+    mangle: true,        // -M in cli
+    packagejson: true,   // -p in cli
+    all_js: true         // -a in cli
   })
 ```
 
