@@ -22,10 +22,10 @@ const minifyJS = async file => {
       input: file,
       output: file,
       options: {
-        warnings: true,
         module: options.module,
-        mangle: false,
-        compress: false
+        mangle: options.mangle,
+        compress: true,
+        comments: false
       }
     })
   } catch(e) {
