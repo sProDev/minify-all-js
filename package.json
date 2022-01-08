@@ -5,10 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/adonespitogo/node-minify-all-js"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "url": "https://github.com/sProDev/minify-all-js"
   },
   "bin": {
     "minify-all-js": "index.js"
@@ -32,11 +29,15 @@
     "dist",
     "reduce"
   ],
-  "author": "Adones Pitogo <pitogo.adones@gmail.com> (http://www.adonespitogo.com)",
-  "bugs": {
-    "url": "https://github.com/adonespitogo/node-minify-all-js/issues"
+  "author": {
+    "name": "Suluh Sulistiawan",
+    "email": "suluh.webdevelopers@hotmail.com",
+    "url": "https://suluh.my.id/"
   },
-  "homepage": "https://github.com/adonespitogo/node-minify-all-js#readme",
+  "bugs": {
+    "url": "https://github.com/sProDev/minify-all-js/issues"
+  },
+  "homepage": "https://github.com/sProDev/minify-all-js#readme",
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
