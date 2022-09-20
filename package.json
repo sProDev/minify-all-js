@@ -1,7 +1,6 @@
 {
   "name": "minify-all-js",
-  "version": "0.1.7",
-  "description": "A tool that minifies all .js files in a folder and its nested folders",
+  "version": "0.1.8",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -30,8 +29,8 @@
     "reduce"
   ],
   "author": {
-    "name": "Suluh Sulistiawan",
-    "email": "suluh.webdevelopers@hotmail.com",
+    "name": "Suluh S",
+    "email": "suluhs@aol.com",
     "url": "https://suluh.my.id/"
   },
   "bugs": {
@@ -39,10 +38,10 @@
   },
   "homepage": "https://github.com/sProDev/minify-all-js#readme",
   "license": "MIT",
-  "devDependencies": {},
   "dependencies": {
     "@node-minify/core": "^6.1.0",
     "@node-minify/terser": "^6.1.0",
+    "javascript-obfuscator": "^4.0.0",
     "promise.series": "^0.2.0"
   }
 }
